@@ -1,0 +1,61 @@
+BEGIN {
+	print "Date;Client;MACAddress;BaseRadioMAC;Slot;UserName;IpAddr;SSID;Reason;ReasonCode"
+}
+{
+	{
+	iClient=index($0,"Client")
+	iAuthenticated=index($0,"Authenticated")
+
+
+	ValFecha=substr($0,0,iClient-2)
+	
+	if (iAuthenticated>0)
+	{
+		iMACAddress=index($0,"MACAddress")
+		iBase=index($0,"base")
+		iRadioMAC=index($0,"RadioMAC")
+		iSlot=index($0,"Slot")
+		iUserName=index($0,"UserName")
+		iIPAddr=index($0,"IPAddr")
+		iSSID=index($0,"SSID")
+		
+		Estado="Authenticated"
+		ValMAC1=substr($0,iMACAddress+11,iBase-iMACAddress-11)
+		ValBaseRadioMAC=substr($0,iRadioMAC+9,iSlot-iRadioMAC-9)
+		ValSlot=substr($0,iSlot+5,iUserName-iSlot-5)
+		ValUserName=substr($0,iUserName+9,iIPAddr-iUserName-9)
+		ValIPAddr=substr($0,iIPAddr+7,iSSID-iIPAddr-7)
+		ValSSID=substr($0,iSSID+5)
+
+		print ValFecha ";" Estado ";" ValMAC1 ";" ValBaseRadioMAC ";" ValSlot ";" ValUserName ";" ValIPAddr ";" ValSSID
+		
+	}
+	else
+	{
+		iDeauthenticated=index($0,"Deauthenticated")
+		iMACAddress=index($0,"MACAddress")
+                iBase=index($0,"BaseRadioMAC")
+                iSlot=index($0,"Slot")
+                iUserName=index($0,"UserName")
+                iIPAddr=index($0,"IpAddress")
+		iReason=index($0,"Reason")
+		iReasonCode=index($0,"ReasonCode")
+
+#		print iDeauthenticated ";" iMACAddress ";" iBase ";" iSlot ";" iUserName
+
+		Estado="Deauthenticated"
+		ValMAC1=substr($0,iMACAddress+11,iBase-iMACAddress-11)
+                ValBaseRadioMAC=substr($0,iBase+13,iSlot-iBase-13)
+                ValSlot=substr($0,iSlot+5,iUserName-iSlot-5)
+                ValUserName=substr($0,iUserName+9,iIPAddr-iUserName-9)
+                ValIPAddr=substr($0,iIPAddr+10,iSSID-iIPAddr-10)
+		ValReason=substr($0,iReason+7,iReasonCode-iReason-7)
+		ValReasonCode=substr($0,iReasonCode+11)				
+		
+
+		print ValFecha ";" Estado ";" ValMAC1 ";" ValBaseRadioMAC ";" ValSlot ";" ValUserName ";" ValIPAddr ";" "None" ";" ValReason ";" ValReasonCode 
+
+
+	}	
+	}
+}

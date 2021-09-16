@@ -1,0 +1,19 @@
+BEGIN{
+        print "Fecha;IPAddress"
+}
+
+{
+	{
+		iSNMP=index($0,"SNMP")
+		iIPAddress=index($0,"IPAddress")
+
+		ValFecha=substr($0,0,iSNMP-2)
+		ValIP=substr($0,iIPAddress+10,15)
+		
+		print ValFecha ";" ValIP
+		
+
+
+
+	}
+}

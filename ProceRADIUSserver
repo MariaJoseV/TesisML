@@ -1,0 +1,27 @@
+BEGIN{
+        print "Fecha;IP;Status;Request;ClientMAC;User"
+}
+
+{
+	{
+	iRadius=index($0,"RADIUSserver")
+	iFailed=index($0,"failed")
+	iRequest=index($0,"request")
+	iFor=index($0,"for")
+	iClient=index($0,"client")
+	iBarra=index($0,"/")
+	iUser=index($0,"user")
+	iComilla=index($0,"'")
+
+	ValFecha=substr($0,0,iRadius-2)
+	ValIP=substr($0,iRadius+12,20)
+	ValEstado=substr($0,iFailed,6)
+	ValRequest=substr($0,iRequest+10,iFor-iRequest-11)	
+	ValClientMAC=substr($0,iClient+6,iBarra-iClient-6)
+	ValUser=substr($0, iUser+4)
+
+	print ValFecha ";" ValIP ";" ValEstado ";" ValRequest ";" ValClientMAC ";" ValUser
+
+	
+	}
+}

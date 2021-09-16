@@ -1,0 +1,68 @@
+BEGIN{
+	print "Fecha;MACRogueAP;Estado;BaseRadioMAC;InterfaceNo;Channel;RSSI;SNR;Classification;State;RuleClassified;SeverityScore;RuleName;ClassifiedAPMAC;ClassifiedRSSI" 
+}
+{
+	{
+
+		iRogueAP=index($0,"RogueAP:")	
+		iRemoved=index($0,"removed")
+		
+		ValFecha=substr($0,0,iRogueAP-2)
+
+		if (iRemoved>0) 
+		{
+
+			iBaseRadioMAC=index($0,"BaseRadioMAC")
+			iInterface=index($0,"Interfaceno")
+		
+			Estado="removed"
+			ValMac1=substr($0,iRogueAP+8,iRemoved-iRogueAP-8)			
+			ValBaseRMAC=substr($0,iBaseRadioMAC+13,iInterface-iBaseRadioMAC-13)	
+			ValInterface=substr($0,iInterface+12)
+
+			print ValFecha ";" ValMac1 ";" Estado ";" ValBaseRMAC ";" ValInterface
+			
+		}
+
+		else
+		{
+			iDetected=index($0,"detected")
+			iBaseRadioMAC=index($0,"BaseRadioMAC")
+                        iInterface=index($0,"Interfaceno")
+			iChannel = index($0,"Channel")
+			iRSSI = index($0,"RSSI")
+			iSNR = index($0,"SNR")
+			iClassification = index($0,"Classification")
+			iState = index($0,"State")
+			iRuleClassified = index($0,"RuleClassified")
+			iSeverityScore = index($0,"SeverityScore")
+			iRuleName = index($0,"RuleName")
+			iClassifiedAPMAC = index($0,"ClassifiedAPMAC")
+			iClassifiedRSSI = index($0,"ClassifiedRSSI")
+			
+			Estado="detected"
+			ValMac1=substr($0,iRogueAP+8,iDetected-iRogueAP-8)
+			ValBaseRMAC=substr($0,iBaseRadioMAC+13,iInterface-iBaseRadioMAC-13)
+			ValInterface=substr($0,iInterface+12,iChannel-iInterface-12)
+			ValChannel = substr($0,iChannel+8,iRSSI-iChannel-8)
+			ValRSSI = substr($0,iRSSI+5,iSNR-iRSSI-5)
+			ValSNR = substr($0,iSNR+4,iClassification-iSNR-4)
+			ValClassification = substr($0,iClassification+15,iState-iClassification-16)
+			ValState = substr($0,iState+6,iRuleClassified-iState-7)
+			ValRuleClassified = substr($0,iRuleClassified+15,iSeverityScore-iRuleClassified-16)
+			ValSeverityScore = substr($0,iSeverityScore+14,iRuleName-iSeverityScore-15)
+			ValRuleName = substr($0,iRuleName+9,iClassifiedAPMAC-iRuleName-10)
+			ValClassifiedAPMAC = substr($0,iClassifiedAPMAC+16,iClassifiedRSSI-iClassifiedAPMAC-17)
+			ValClassifiedRSSI = substr($0,iClassifiedRSSI+15)
+                
+		        print ValFecha ";" ValMac1 ";" Estado ";" ValBaseRMAC ";" ValInterface ";" ValChannel ";" ValRSSI ";"  ValSNR ";" ValClassification ";"  ValState ";" ValRuleClassified ";" ValSeverityScore ";"  ValRuleName ";" ValClassifiedAPMAC ";" ValClassifiedRSSI
+
+		}
+
+
+
+	
+
+
+	}
+}

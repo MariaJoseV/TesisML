@@ -1,0 +1,23 @@
+BEGIN{
+        print "Fecha;APBaseRadioMAC;IPAddress;MACAddress"
+}
+
+{
+	{
+		iWarning= index($0,"Warning")
+		iAPBaseRadioMAC= index($0,"BaseRadioMAC")
+		iIPAddress=index($0,"IPAddress")
+		iMACAddress=index($0,"MACAddress")
+		ibeing=index($0,"being")
+
+
+		ValFecha=substr($0,0,iWarning-2)
+		ValAPMAC=substr($0,iAPBaseRadioMAC+12,iIPAddress-iAPBaseRadioMAC-23)
+		ValIP=substr($0,iIPAddress+9,ibeing-iIPAddress-9)
+		ValMACAddress=substr($0,iMACAddress+10,17)
+		
+		print ValFecha ";" ValAPMAC ";" ValIP ";" ValMACAddress
+	
+	}
+
+}

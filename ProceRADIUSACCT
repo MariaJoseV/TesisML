@@ -1,0 +1,19 @@
+BEGIN{
+        print "Fecha;IP;Status;Position"
+}
+
+{
+	{
+		iServer=index($0,"Server")		
+		iNum=index($0,"1813")
+		iIn=index($0,"in")
+		
+		ValFecha=substr($0,0,iServer-12)
+		ValIP=substr($0,iServer+6,20)
+		ValEstado=substr($0,iNum+4,iIn-iNum-4)		
+		ValPosicion=substr($0,iIn+2,11)		
+
+		print ValFecha ";" ValIP ";"  ValEstado ";" ValPosicion
+
+	}
+}

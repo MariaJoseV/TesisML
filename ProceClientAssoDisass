@@ -1,0 +1,74 @@
+BEGIN {
+	print "Date;Client;ClientMACAddress;BaseRadioMAC;Slot;UserName;IPAddress;Reason;ReasonCode;TxPkts;TxBytes;RxPkts;RxBytes"
+}
+{
+	{
+		iClient=index($0,"Client")
+		iAssociation=index($0,"Association")
+		ValFecha=substr($0,0,iClient-2)
+
+
+		if (iAssociation>0)
+		{
+			iClientMAC=index($0,"ClientMAC")
+			iBaseRadioMAC=index($0,"BaseRadioMAC")
+			iSlot=index($0,"Slot")
+			iUserName=index($0,"UserName")
+			iIPAddr=index($0,"IPAddr")
+
+
+
+			Estado="Association"
+			ValClientMAC=substr($0,iClientMAC+10,iBaseRadioMAC-iClientMAC-10)
+			ValBaseRadioMAC=substr($0,iBaseRadioMAC+13,iSlot-iBaseRadioMAC-13)
+			ValSlot=substr($0,iSlot+5,iUserName-iSlot-5)
+			ValUserName=substr($0,iUserName+9,iIPAddr-iUserName-9)
+			ValIPAddr=substr($0,iIPAddr+7)			
+
+			print ValFecha ";" Estado ";" ValClientMAC ";" ValBaseRadioMAC ";" ValSlot ";" ValUserName ";" ValIPAddr
+		}
+		else 
+		{
+
+			iDisassociated=index($0,"Disassociated")
+			iClientMAC=index($0,"MACAddress")
+                        iBaseRadioMAC=index($0,"BaseRadioMAC")
+                        iSlot=index($0,"Slot")
+                        iUserName=index($0,"UserName")
+                        iIPAddr=index($0,",IpAddress")
+			iReason=index($0,"Reason")
+			iReasonCode=index($0,"ReasonCode")
+			iTxP=index($0,"TxPkts")
+	
+			if (iTxP>0)
+			{
+				iTxB=index($0,"TxBytes")
+				iRxP=index($0,"RxPkts")
+				iRxB=index($0,"RxBytes")			
+
+				Estado="Disassociated"
+	                        ValClientMAC=substr($0,iClientMAC+11,iBaseRadioMAC-iClientMAC-11)
+	                        ValBaseRadioMAC=substr($0,iBaseRadioMAC+13,iSlot-iBaseRadioMAC-13)
+	                        ValSlot=substr($0,iSlot+5,iUserName-iSlot-5)
+	                        ValUserName=substr($0,iUserName+9,iIPAddr-iUserName-9)
+	                        ValIPAddr=substr($0,iIPAddr+11,iReason-iIPAddr-11)
+	                        ValReason=substr($0,iReason+7,iReasonCode-iReason-7)
+	                        ValReasonCode=substr($0,iReasonCode+11,iTxP-iReasonCode-11)
+	                        ValTxP=substr($0,iTxP+7,iTxB-iTxP-7)
+	                        ValTxB=substr($0,iTxB+8,iRxP-iTxB-8)
+	                        ValRxP=substr($0,iRxP+7,iRxB-iRxP-7)
+	                        ValRxB=substr($0,iRxB+8)
+
+
+	                       print ValFecha ";" Estado ";" ValClientMAC ";" ValBaseRadioMAC ";" ValSlot ";" ValUserName ";" ValIPAddr ";" ValReason ";" ValReasonCode ";" ValTxP ";" ValTxB ";" ValRxP ";" ValRxB
+			
+			}
+			else
+			{
+				print ValFecha ";" Estado ";" ValClientMAC ";" ValBaseRadioMAC ";" ValSlot ";" ValUserName ";" ValIPAddr ";" ValReason ";" ValReasonCode
+			}
+		}
+		
+
+	}
+}

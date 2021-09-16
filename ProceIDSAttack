@@ -1,0 +1,32 @@
+BEGIN{
+        print "Fecha;SignatureType;Name;Description;Track;DetectingAPName;RadioType;Preced;Hits;Channel;srcMac"
+}
+{
+        {
+		iIDS=index($0,"IDSSignatureattackdetected")
+		iSignatureType=index($0,"SignatureType")
+                iName=index($0,"Name")
+		iDescription=index($0,"Description")
+		iTrack=index($0,"Track")
+		iAPName=index($0,"DetectingAPName")
+		iRadioType=index($0,"RadioType")
+		iPreced=index($0,"Preced")
+		iHits=index($0,"Hits")
+		iChannel=index($0,"Channel")
+		isrMac=index($0,"srcMac")
+
+                ValFecha=substr($0,0,iIDS-2)
+		ValSignature=substr($0,iSignatureType+14,iName-iSignatureType-15)
+		ValName=substr($0,iName+5,iDescription-iName-6)
+		ValDescription=substr($0,iDescription+12,iTrack-iDescription-13)
+		ValTrack=substr($0,iTrack+6,iAPName-iTrack-7)
+		ValAPName=substr($0,iAPName+16,iRadioType-iAPName-17)
+		ValRadioType=substr($0,iRadioType+10,iPreced-iRadioType-11)
+		ValPreced=substr($0,iPreced+7,iHits-iPreced-8)
+		ValHits=substr($0,iHits+5,iChannel-iHits-6)
+		ValChannel=substr($0,iChannel+8,isrMac-iChannel-9)
+		ValsrcMac=substr($0,isrMac+7)
+		print ValFecha ";" ValSignature ";" ValName ";" ValDescription ";" ValTrack ";" ValAPName ";" ValRadioType ";" ValPreced ";" ValHits ";" ValChannel ";" ValsrcMac
+	}
+}
+
